@@ -65,6 +65,11 @@ app.post('/api/pinatas', async function (req,res){
 });
 });
 
+app.put('/api/pinatas/:Id/hit', async function (req, res) {
+    const Id = req.params.Id;
+    const result = await pinataService.hitPinata(Id);
+    return res.status(result).json();
+});
 
 
 app.listen(3000, function(){
