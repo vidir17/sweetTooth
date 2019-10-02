@@ -33,7 +33,8 @@ const candyService = () => {
         var highest = Math.max(...array.map(x => x.id));
             var newCandy = {
                     id: highest+1,
-                    ...body
+                    name: body.name,
+                    description: body.description
                 }
         return array.push(newCandy);
     };
