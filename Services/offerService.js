@@ -18,19 +18,15 @@ const offerService = () => {
     //const temp = Object.assign(offerArray, candyArray); 
     //temp.push(offerArray);
     
-    const clone = JSON.parse(JSON.stringify(offerArray));
+    const clone = JSON.parse(JSON.stringify(offerArray)); // To copy the array
     
     for(var h = 0; h < offerArray.length; h++){
         for(var i = 0; i < offerArray[h].candies.length; i++){
-            clone[h].candies[i] = candyArray[clone[h].candies[i]-1];   
+            clone[h].candies[i] = candyArray[clone[h].candies[i]-1]; //filling the array
         }
     }
    
-    
-    //console.log(offerArray.length);
-    //console.log(offerArray[1].candies.length);
-    //console.log(offerArray[0].candies[0].findById());
-    //console.log(array.find(x=>x.candies==1));
+
     return clone;
 };
 

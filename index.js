@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const candyService = require('./Services/candyService.js');
 const offerService = require('./Services/offerService.js');
+const pinataService = require('./Services/pinataService.js');
 
 app.use(bodyParser.json());
 
@@ -36,7 +37,13 @@ app.get('/api/offers', async function (req, res){
     return res.json(result);
 });
 
-
+//(10%) /api/pinatas - Gets all pinatas within the application - should contain all properties
+//excluding surprise
+app.get('/api/pinatas', async function (req, res){
+    
+    const result = await pinataService.getAllPinatas();
+    return res.json(result);
+});
 
 app.listen(3000, function(){
     console.log('Server is listening on port 3000');
