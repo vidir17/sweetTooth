@@ -1,5 +1,6 @@
 const db = require('../data.json');
 const request = require('request');
+var validUrl = require('valid-url');
 const allowed = ['id', 'name', 'maximumHits', 'currentHits'];
 const results = [];
 const surprises = ['https://vignette.wikia.nocookie.net/matrix/images/3/32/Neo.jpg/revision/latest?cb=20060715235228',
@@ -13,7 +14,6 @@ var directory = './images';
 fill_Hits();
 function fill_Hits(){
 for(var i = 0; i < db.pinatas.length; i++){
-    //random generate url
     (db.pinatas[i])['currentHits'] = 0;
 }
 
@@ -77,16 +77,19 @@ const pinataService = () => {
     };
 
     const hitPinata = async function (Id) {
-        //console.log( surprises[Math.round(Math.random() * 3)]);
-        console.log((db.pinatas[Id-1])['surprise']);
         (db.pinatas[Id-1])['currentHits'] += 1;
         if((db.pinatas[Id-1])['currentHits'] < (db.pinatas[Id-1])['maximumHits']){
-        console.log((db.pinatas[Id-1])['currentHits']);
-        return 204;
-        }else if((db.pinatas[Id-1])['currentHits'] == (db.pinatas[Id-1])['maximumHits']){
+        
+        return 204; //Hit but nothing happens
+        }else if((db.pinatas[Id-1])['currentHits'] == (db.pinatas[Id-1])['maximumHits'] && validUrl.isUri((db.pinatas[Id-1])['surprise'])){
             request.get(db.pinatas[Id-1].surprise).pipe(FileSystem.createWriteStream('./images/' + db.pinatas[Id-1].name + '.jpg'));
             return 200; // Winner
-        }else{
+        }else if(((db.pinatas[Id-1])['currentHits'] == (db.pinatas[Id-1])['maximumHits'] && !validUrl.isUri((db.pinatas[Id-1])['surprise']))){
+            //append to txt file
+            FileSystem.appendFileSync('message.txt', (db.pinatas[Id-1])['surprise'] + "\n");
+            return 200;
+        }
+        else{
             return 423; //locked
         }
     };
